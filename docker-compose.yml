@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+
+  proflie:
+    build: .
+    environment:
+      - AUTORELOAD_PROGRAMS=swoole
+      - AUTORELOAD_ANY_FILES=1
+      - JWT_SECRET
+      - MAILJET_PUBLIC_KEY
+      - MAILJET_PRIVATE_KEY
+      - HOST
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE
+      - RECAPTCHA_PRIVATE
+    ports:
+      - "80:80"
+    volumes:
+      - ".:/var/www"
+      - "/var/www/mysql-data"
+
+  mysql:
+    restart: always
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE
+    volumes:
+      - ./mysql-data:/var/lib/mysql

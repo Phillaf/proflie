@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en-CA">
+
+<head>
+  <meta charset="utf-8">
+  <title>Proflie</title>
+  <meta name="description" content="Your profile on social media">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+<?php include("Form.css") ?>
+  </style>
+
+</head>
+
+
+<body>
+  <h1>Sign up</h1>
+  <div id="intro">
+    <p>Already have an account? <a href="/" id="signin" aria-label="Log in">Log in</a></p>
+  </div>
+
+  <div id="forms"> 
+    <form action="#" method="post">
+      <section>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" tabindex="1" required>
+      </section>
+      <button id="submit" tabindex="2">Sign up</button>
+    </form>
+  </div>
+
+<script src="https://www.google.com/recaptcha/api.js?render=6LcUJsEfAAAAAA_jct61ZBauRYPL-N7qzOkupZB6"></script>
+<script type="module"><?php include("SendEmailVerification.js") ?></script>
+</body>
+
+</html>

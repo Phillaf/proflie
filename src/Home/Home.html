@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en-CA">
+
+<head>
+  <meta charset="utf-8">
+  <title>Proflie</title>
+  <meta name="description" content="Your profile on social media">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+<?php include("Home.css"); ?>
+  </style>
+</head>
+
+<body>
+  <h1>Proflie</h1>
+  <div id="intro">
+    <p>A simple hub for your online presence.</p>
+    <a href="/send-email-verification" id="signup" aria-label="Create an Account">Create an Account</a>
+  </div>
+
+  <div id="forms"> 
+    <form action="#" method="post">
+      <section>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" tabindex="1" required>
+      </section>
+      <section>
+        <div id="password-label">
+          <label for="password">Password</label>
+          <button id="toggle-password" type="button" aria-label="Show password as plain text. Warning: this will display your password on the screen.">Show Password</button>
+        </div>
+        <input id="password" name="password" type="password" autocomplete="password" tabindex="2" required>
+      </section>
+      <button id="submit" tabindex="3">Sign in</button>
+    </form>
+  </div>
+
+<script src="https://www.google.com/recaptcha/api.js?render=6LcUJsEfAAAAAA_jct61ZBauRYPL-N7qzOkupZB6"></script>
+<script>
+<?php include(__DIR__ . "/../Cookie.js"); ?>
+<?php include("Home.js") ?>
+</script>
+</body>
+
+</html>
+

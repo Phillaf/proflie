@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en-CA">
+
+<head>
+  <meta charset="utf-8">
+  <title>Proflie</title>
+  <meta name="description" content="Your profile on social media">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    <?php include("Form.css") ?>
+    #password-label {
+      display:flex;
+      justify-content: space-between;
+    }
+    #password-label>label, #password-label>button {
+      flex: 1 1 auto;
+      max-width: 150px;
+    }
+    #toggle-password {
+      background: none;
+      border: none;
+      cursor: pointer;
+      line-height: 3rem;
+      text-align: right;
+    }
+  </style>
+
+</head>
+
+<body>
+  <h1>Sign up</h1>
+  <div id="intro">
+    <p>already have an account? <a href="/" id="signin" aria-label="Log in">Log in</a></p>
+  </div>
+
+  <div id="forms"> 
+    <form action="#" method="post">
+      <section>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" tabindex="1" disabled="1" value="<?= $email ?>" required>
+      </section>
+      <section>
+        <label for="username">Username</label>
+        <input id="username" name="username" type="username" placeholder=" " autocomplete="username" tabindex="2" required>
+      </section>
+      <section>
+        <div id="password-label">
+          <label for="password">Password</label>
+          <button id="toggle-password" type="button" aria-label="Show password as plain text. Warning: this will display your password on the screen.">Show Password</button>
+
+        </div>
+        <input id="password" name="password" type="password" autocomplete="password" tabindex="3" required>
+      </section>
+      <button id="submit" tabindex="4">Sign up</button>
+    </form>
+  </div>
+
+<script>
+<?php include(__DIR__ . "/../Cookie.js"); ?>
+<?php include("CreateAccount.js") ?>
+</script>
+</body>
+
+</html>
+
+

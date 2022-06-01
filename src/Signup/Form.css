@@ -1,0 +1,62 @@
+body {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  color: #333;
+  font-size: 1rem;
+  padding-top: 5rem;
+}
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 500;
+  margin: 0;
+}
+h2 {
+  border-bottom: 1px solid #ccc;
+  font-size: 1.3rem;
+  font-weight: 500;
+  padding: 0 0 0.5rem 0;
+}
+button {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  color: #333;
+}
+button, input, a {
+  font-size: 1rem;
+}
+#intro {
+  text-align: center;
+}
+#forms {
+  display:flex;
+  justify-content: center;
+  margin: 2rem;
+}
+form {
+  flex: 1 1 auto;
+  max-width: 500px;
+  border-top: 1px solid #ccc;
+  padding-top: 1rem;
+}
+form section {
+  margin: 0 0 1rem 0;
+}
+input {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  width: calc(100% - 2.1rem);
+}
+label {
+  line-height: 3rem;
+}
+#submit {
+  background-color: #666;
+  font-weight: 800;
+  border: 1px solid #ccc;
+  color: #fff;
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 1rem;
+}
+#submit:hover {
+  background-color: #777;
+}
