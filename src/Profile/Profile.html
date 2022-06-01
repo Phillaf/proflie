@@ -15,49 +15,58 @@
     color: #333;
     font-size: 1rem;
     padding-top: 5em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
-  
   h1 {
-    text-align: center;
     font-size: 2.5rem;
     font-weight: 500;
     margin: 0;
   }
-  
   h1 small {
     color: #777;
     font-size: 1.6rem;
     font-weight: 300;
   }
-  
-  #intro {
-    text-align: center;
+  h2 {
+    display: none;
   }
-  
-  #links {
-    text-align: center;
+  ul {
+    display: flex;
+    padding: 0;
     margin: 2rem;
+    list-style: none;
     line-height: 3rem;
   }
-  #links a {
+  li > a {
     color: #8ec449;
     font-size: 1.8rem;
     margin: 1rem;
   }
   </style>
+
 </head>
 
-<body>
+<body itemscope itemtype="https://schema.org/Person">
   <h1>
-  <?= $display_name ?> <small><?= $title ?></small>
+    <span itemprop="name"><?= $display_name ?></span>
+    <small itemprop="hasOccupation" itemscope itemtype="https://schema.org/Occupation">
+      <span itemprop="name"><?= $title ?></span>
+    </small>
   </h1>
-  <p id="intro"><?= $bio ?></p>
-  <div id="links">
-      <?php foreach($links as $link) {
-          $key = $link[3];
-          include('links/' . $link[2] . '.html');
-      } ?>
-  </div>
+  <p itemprop="description"><?= $bio ?></p>
+  <h2>Links</h2>
+  <ul>
+    <?php foreach($links as $link) : ?>
+      <li>
+      <?php
+        $key = $link[3];
+        include('links/' . $link[2] . '.html');
+      ?>
+      </li>
+    <?php endforeach; ?>
+  </ul>
 </body>
 
 </html>
