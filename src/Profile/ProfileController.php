@@ -23,16 +23,15 @@ class ProfileController
         $username = explode('.', $request->header['host'])[0];
 
         $mysqli = $this->mysqliPool->get();
-        $profile = $this->getProfile($username, $mysqli);
-        $profile['display_name'] = htmlspecialchars($profile['display_name'] ?? "");
-        $profile['title'] = htmlspecialchars($profile['title'] ?? "");
-        $profile['bio'] = htmlspecialchars($profile['bio'] ?? "");
-
-        if (!$profile) {
+        if (!$profile = $this->getProfile($username, $mysqli)) {
             $response->status(404);
             $response->end();
             return;
         }
+
+        $profile['display_name'] = htmlspecialchars($profile['display_name'] ?? "");
+        $profile['title'] = htmlspecialchars($profile['title'] ?? "");
+        $profile['bio'] = htmlspecialchars($profile['bio'] ?? "");
 
         extract($profile);
         extract(['links' => $this->links($username, $mysqli)]);
@@ -54,7 +53,7 @@ class ProfileController
         };
         $result = $stmt->get_result();
         $data = $result->fetch_assoc();
-        return $data;
+        return $data ?? false;
     }
 
     public function links(string $username, MysqliProxy $mysqli): array
