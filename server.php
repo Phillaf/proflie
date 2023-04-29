@@ -8,7 +8,6 @@ use Swoole\Http\Request;
 use Swoole\Http\Response;
 use Swoole\Runtime;
 
-
 $routes = require __DIR__ . '/bootstrap/routes.php';
 $services = require __DIR__ . '/bootstrap/services.php';
 
@@ -23,33 +22,26 @@ $http->set([
 ]);
 $http->on("request", function (Request $request, Response $response) use ($routes, $services, $domainWithoutDotCom) {
 
-    if (getProfile($request, $response, $services, $domainWithoutDotCom))
-        return;
+    try {
+        if (getStatic($request, $response))
+            return;
 
-    if (getStatic($request, $response))
-        return;
+        if (getProfile($request, $response, $services, $domainWithoutDotCom))
+            return;
 
-    if (getPhp($request, $response, $services, $routes))
-        return;
+        if (getPhp($request, $response, $services, $routes))
+            return;
 
-    $response->status(404, 'Not Found');
-    $response->write('404 Not Found');
-    $response->end();
+        $response->status(404, 'Not Found');
+        $response->write('404 Not Found');
+        $response->end();
+    } catch(\Throwable $e) {
+      var_dump($request);
+      throw $e;
+    }
 });
 
 $http->start();
-
-
-function getProfile(Request $request, Response $response, array $services, string $domainWithoutDotCom): bool
-{
-    $subdomain = explode('.', $request->header['host'])[0];
-    if ($subdomain !== $domainWithoutDotCom) {
-        $profilecontroller = $services['profile'];
-        $profilecontroller->execute($request, $response);
-        return true;
-    };
-    return false;
-}
 
 function getStatic(Request $request, Response $response): bool
 {
@@ -58,7 +50,7 @@ function getStatic(Request $request, Response $response): bool
         return false;
     }
 
-    if(pathinfo($staticFile, PATHINFO_EXTENSION) !== 'js') {
+    if(!in_array(pathinfo($staticFile, PATHINFO_EXTENSION), ['js', 'txt', 'ico'])) {
         return false;
     };
 
@@ -66,6 +58,18 @@ function getStatic(Request $request, Response $response): bool
     $response->sendfile($staticFile);
     return true;
 }
+
+function getProfile(Request $request, Response $response, array $services, string $domainWithoutDotCom): bool
+{
+    $subdomain = explode('.', $request->header['host'] ?? "")[0];
+    if ($subdomain !== $domainWithoutDotCom) {
+        $profilecontroller = $services['profile'];
+        $profilecontroller->execute($request, $response);
+        return true;
+    };
+    return false;
+}
+
 function getPhp(Request $request, Response $response, array $services, $routes): bool
 {
     $httpMethod = $request->server['request_method'];

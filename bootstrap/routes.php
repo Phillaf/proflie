@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 return FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
-    $r->addRoute('GET', '/robots.txt', 'robots');
     // Admin
     $r->addRoute('GET', '/admin', 'admin');
     $r->addRoute('POST', '/profile', 'profile_update');

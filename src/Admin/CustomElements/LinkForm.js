@@ -1,5 +1,5 @@
 const select = `
-  <select aria-label="Social Media" id="social-media" name="socialMedia" tabindex="1" required>
+  <select aria-label="Social Media" id="social-media" name="socialMedia" required>
     <option value="facebook">Facebook</option>
     <option value="github">Github</option>
     <option value="lastfm">LastFM</option>
@@ -14,7 +14,7 @@ const editLink = document.createElement('template');
 editLink.innerHTML = `
   <form action="#" method="post">
     ${select}
-    <input aria-label="Key" id="key" name="key" tabindex="2" required>
+    <input aria-label="Key" id="key" name="key" required>
     <section class="actions">
       <button disabled="true" type="submit"><i class="fa-solid fa-check"></i></button>
       <button class="delete"><i class="fa-solid fa-xmark"></i></button>
@@ -26,7 +26,7 @@ const addLink = document.createElement('template');
 addLink.innerHTML = `
   <form action="#" method="post">
     ${select}
-    <input aria-label="Key" id="key" name="key" tabindex="2" required>
+    <input aria-label="Key" id="key" name="key" required>
     <section class="actions">
       <button disabled="true" type="submit"><i class="fa-solid fa-check"></i></button>
     </section>

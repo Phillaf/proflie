@@ -12,7 +12,6 @@ $mysqliPool = new Swoole\Database\MysqliPool(
         ->withPassword($_ENV["MYSQL_ROOT_PASSWORD"]));
 
 $services['profile'] = new Proflie\Profile\ProfileController($mysqliPool);
-$services['robots'] = new Proflie\Robots\RobotsController();
 
 // Admin
 $services['admin'] = new Proflie\Admin\AuthenticatorRedirect(

@@ -8,17 +8,17 @@ class AdminProfile extends HTMLElement {
       <form action="#">
         <section>
           <label for="displayName">Display Name</label>
-          <input id="displayName" name="displayName" tabindex="1" required>
+          <input id="displayName" name="displayName" required>
         </section>
         <section>
           <label for="title">Title</label>
-          <input id="title" name="title" tabindex="2" required>
+          <input id="title" name="title" required>
         </section>
         <section>
           <label for="bio">Bio</label>
-          <textarea id="bio" name="bio" tabindex="3" required></textarea>
+          <textarea id="bio" name="bio" required></textarea>
         </section>
-        <button id="submit" tabindex="4">Save</button>
+        <button id="submit">Save</button>
       </form>
     `;
 

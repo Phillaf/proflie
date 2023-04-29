@@ -20,7 +20,7 @@ class ProfileController
 
     public function execute(Request &$request, Response &$response)
     {
-        $username = explode('.', $request->header['host'])[0];
+        $username = explode('.', $request->header['host'] ?? "")[0];
 
         $mysqli = $this->mysqliPool->get();
         if (!$profile = $this->getProfile($username, $mysqli)) {
