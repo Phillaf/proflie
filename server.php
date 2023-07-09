@@ -15,14 +15,35 @@ $domainWithoutDotCom = str_replace(".com", "", explode('//', $_ENV['HOST'])[1]);
 
 Runtime::enableCoroutine(true, SWOOLE_HOOK_ALL);
 
-$http = new Swoole\Http\Server("0.0.0.0", 80);
-$http->set([
-    'log_level' => 0,
-    'open_http2_protocol' => true,
-]);
-$http->on("request", function (Request $request, Response $response) use ($routes, $services, $domainWithoutDotCom) {
+$https = new Swoole\Http\Server("0.0.0.0", 443, SWOOLE_PROCESS, SWOOLE_SOCK_TCP | SWOOLE_SSL);
+$http = $https->addListener("0.0.0.0", 80, SWOOLE_SOCK_TCP);
 
+$https->set([
+    'ssl_cert_file' => '/etc/letsencrypt/live/proflie.com/fullchain.pem',
+    'ssl_key_file' => '/etc/letsencrypt/live/proflie.com/privkey.pem',
+    'log_level' => 0,
+    //'open_http2_protocol' => true,
+]);
+
+$http->on("request", function (Request $request, Response $response) {
     try {
+        accessLog($request, $response);
+        if (letsEncrypt($request, $response))
+            return;
+
+        $response->redirect("https://{$request->header['host']}{$request->server['request_uri']}", 302); // todo: switch to 301 permanent redirect
+    } catch(\Throwable $e) {
+      var_dump($request);
+      throw $e;
+    }
+});
+
+$https->on("request", function (Request $request, Response $response) use ($routes, $services, $domainWithoutDotCom) {
+    try {
+        accessLog($request, $response);
+        if (letsEncrypt($request, $response))
+            return;
+
         if (getStatic($request, $response))
             return;
 
@@ -41,7 +62,34 @@ $http->on("request", function (Request $request, Response $response) use ($route
     }
 });
 
-$http->start();
+$https->start();
+
+function accessLog(Request $request, Response $response) : void
+{
+    $date =  date("c", $request->server['master_time']);
+$log = <<< LOG
+{$request->server['remote_addr']} - {$request->header['host']} - [$date] - {$request->server['request_method']} {$request->server['request_uri']} - {$request->header['user-agent']}\r\n
+LOG;
+
+    file_put_contents("/var/log/proflie/access.log", $log, FILE_APPEND);
+}
+
+function letsEncrypt(Request $request, Response $response): bool
+{
+    if (substr($request->server['request_uri'], 0, 28) !== "/.well-known/acme-challenge/") {
+        return false;
+    }
+
+    $staticFile = __DIR__ . "/letsencrypt/.well-known/acme-challenge/" . substr($request->server['request_uri'], 28);
+
+    if (!file_exists($staticFile)) {
+        return false;
+    }
+
+    $response->header("Content-Type", "text/html; charset=utf-8");
+    $response->write(file_get_contents($staticFile));
+    return true;
+}
 
 function getStatic(Request $request, Response $response): bool
 {
@@ -54,7 +102,6 @@ function getStatic(Request $request, Response $response): bool
         return false;
     };
 
-    $response->header('Content-Type', 'text/javascript');
     $response->sendfile($staticFile);
     return true;
 }
@@ -92,6 +139,5 @@ function getPhp(Request $request, Response $response, array $services, $routes):
         $response->end();
         return true;
     }
-
     return false;
 }

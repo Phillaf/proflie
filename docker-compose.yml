@@ -16,9 +16,12 @@ services:
       - RECAPTCHA_PRIVATE
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ".:/var/www"
+      - "./logs:/var/log/proflie/"
       - "/var/www/mysql-data"
+      - "/var/www/logs"
 
   mysql:
     restart: always
